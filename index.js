@@ -69,10 +69,22 @@ const defaultSrc = () => {
     ]
 }
 
+const stripes = () => {
+    return [
+        // rgba
+        ...[192, 192, 192, 255], // top left
+        ...[255, 255, 255, 255], // top right
+        ...[192, 192, 192, 255], // bottom left
+        ...[255, 255, 255, 255], // bottom right
+        ...[192, 192, 192, 255],
+        ...[255, 255, 255, 255],
+    ]
+}
+
 const tex = twgl.createTexture(gl, {
     min: gl.NEAREST,
     mag: gl.NEAREST,
-    src: defaultSrc()
+    src: stripes()
 });
 
 const uniforms = {
@@ -90,8 +102,6 @@ let playing = true
 let worldRotation = [0, 0, 0]
 
 let lastTime = 0
-
-var MatType = Float32Array
 
 function render(time) {
     time *= 0.001;
@@ -150,20 +160,40 @@ window.addEventListener('keydown', event => {
     switch (c) {
         case 32:
             playing = !playing
-            if(playing) requestAnimationFrame(render)
             break;
     
         case 88:
-            if (shift) worldRotation[0] -= m; else worldRotation[0] += m
-            //rotate positive x
+            if (shift) {
+                worldRotation[0] -= m;
+                console.log('rotate x by -'+ m);
+            } else {
+                worldRotation[0] += m
+                console.log('rotate x by +' + m);
+            }
+            break;
         case 89:
-            if (shift) worldRotation[1] -= m; else worldRotation[1] += m
-            // rotate positive y
+            if (shift) {
+                worldRotation[1] -= m;
+                console.log('rotate y by -'+ m);
+            } else {
+                worldRotation[1] += m
+                console.log('rotate y by +' + m);
+            }
+            break;
         case 90:
-            if (shift) worldRotation[2] -= m; else worldRotation[2] += m
-            // rotate postive z
+            if (shift) {
+                worldRotation[2] -= m;
+                console.log('rotate z by -'+ m);
+            } else {
+                worldRotation[2] += m
+                console.log('rotate z by +' + m);
+            }
+            break;
         default:
             break;
     }
-    requestAnimationFrame(render)
 }, false)
+
+window.addEventListener('wheel', e => {
+    
+})
