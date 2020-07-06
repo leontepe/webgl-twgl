@@ -21,70 +21,13 @@ const programInfo = twgl.createProgramInfo(gl, [vsSource, fsSource]);
     }
 } */
 
-const arrays = {
-    position: [
-        1, 1, -1,
-        1, 1, 1,
-        1, -1, 1,
-        1, -1, -1,
-        
-        -1, 1, 1,
-        -1, 1, -1,
-        -1, -1, -1,
-        -1, -1, 1,
-        
-        -1, 1, 1,
-        1, 1, 1,
-        1, 1, -1,
-        -1, 1, -1,
-        
-        -1, -1, -1,
-        1, -1, -1,
-        1, -1, 1,
-        -1, -1, 1,
-
-        1, 1, 1,
-        -1, 1, 1,
-        -1, -1, 1,
-        1, -1, 1,
-        
-        -1, 1, -1,
-        1, 1, -1,
-        1, -1, -1,
-        -1, -1, -1
-    ],
-    normal: [1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, -1, 0, 0, -1, 0, 0, -1, 0, 0, -1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, -1, 0, 0, -1, 0, 0, -1, 0, 0, -1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, -1, 0, 0, -1, 0, 0, -1, 0, 0, -1],
-    texcoord: [1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1],
-    indices: [0, 1, 2, 0, 2, 3, 4, 5, 6, 4, 6, 7, 8, 9, 10, 8, 10, 11, 12, 13, 14, 12, 14, 15, 16, 17, 18, 16, 18, 19, 20, 21, 22, 20, 22, 23],
-};
+const { arrays, texSrc } = cuboid(5, 1, 5)
 const bufferInfo = twgl.createBufferInfoFromArrays(gl, arrays);
-
-const defaultSrc = () => {
-    return [
-        // rgba
-        ...[255, 255, 255, 255], // top left
-        ...[192, 192, 192, 255], // top right
-        ...[192, 192, 192, 255], // bottom left
-        ...[255, 255, 255, 255], // bottom right
-    ]
-}
-
-const stripes = () => {
-    return [
-        // rgba
-        ...[192, 192, 192, 255], // top left
-        ...[255, 255, 255, 255], // top right
-        ...[192, 192, 192, 255], // bottom left
-        ...[255, 255, 255, 255], // bottom right
-        ...[192, 192, 192, 255],
-        ...[255, 255, 255, 255],
-    ]
-}
 
 const tex = twgl.createTexture(gl, {
     min: gl.NEAREST,
     mag: gl.NEAREST,
-    src: stripes()
+    src: texSrc
 });
 
 const uniforms = {
@@ -97,7 +40,7 @@ const uniforms = {
     u_diffuse: tex,
 };
 
-let playing = true
+let playing = false
 
 let worldRotation = [0, 0, 0]
 
@@ -120,7 +63,7 @@ function render(time) {
     const zNear = 0.5;
     const zFar = 10;
     const projection = m4.perspective(fov, aspect, zNear, zFar);
-    const eye = [1, 4, -6];
+    const eye = [1, 5, -6];
     const target = [0, 0, 0];
     const up = [0, 1, 0];
 
